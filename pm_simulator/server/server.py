@@ -5,11 +5,13 @@ from flask import Flask, render_template, request, jsonify
 from chatgpt_manager import GptManager
 
 app = Flask(__name__, template_folder='templates', static_folder='assets')
-print(app.static_folder) 
+#app = Flask(__name__, template_folder='personal_blog/templates', static_folder='personal_blog/assets')
+
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/update_css', methods=['POST'])
 def update_css():

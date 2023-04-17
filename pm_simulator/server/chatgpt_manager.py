@@ -1,6 +1,7 @@
 import os
 from collections import deque
 import openai
+import re
 import logging
 logger = logging.getLogger(__name__)
 
@@ -27,7 +28,7 @@ class GptManager:
         return cls(api_key, model_engine, temperature, max_tokens, keep_history_num)
 
     def generate_system_message(self) -> str:
-        system_message = """
+        """
         You are a helpful website developer and help to update the CSS file.
 
 Here is the HTML file.
@@ -58,8 +59,46 @@ Here is the original CSS file.
 Get user's input and only output the new CSS file. No instruction, introduction and other message.
         """
 
+
+        with open('./templates/index.html', 'r') as file:
+          html = file.read()
+
+        with open('./assets/style.css', 'r') as file:
+          css = file.read()
+
+
+        system_message_template = """You are a helpful website designer and developer to help to update the CSS file.
+
+Here is the HTML file.
+
+{}
+
+Here is the original CSS file.
+
+{}
+
+Update the CSS file for user's command and make sure to keep the original CSS style. Only output the CSS file and no instruction, introduction nor other message.
+"""
+        system_message = system_message_template.format(html, css)
+        print("system_message: ", system_message)
         return system_message
 
+
+    def extrace_css_code(self, input_text: str) -> str:
+      # Regular expression to match the code block delimiter and extract the content
+      pattern = r"```(?P<lang>[a-zA-Z]*)\n(?P<code>.*?)```"
+
+      # Search for the code block in the text output
+      match = re.search(pattern, input_text, re.DOTALL)
+
+      # If a match is found, extract the code block content as a string
+      if match:
+          code_block = match.group("code")
+          return code_block
+      else:
+         return input_text
+      
+    
     def generate_css(self, command: str):
         request_messages = list(self.history_message_queue)
         request_messages.append({"role": "user", "content": command})
@@ -74,5 +113,12 @@ Get user's input and only output the new CSS file. No instruction, introduction 
         # TODO: Update user command as needed, append system output as needed
         # self.history_message_queue.append()
 
-        return response.choices[0].message["content"]
+        output_content = response.choices[0].message["content"]
+        print("ChatGPT output_content", output_content)
 
+        if "```" in output_content:
+           css_code = self.extrace_css_code(output_content)
+        else:
+           css_code =output_content
+
+        return css_code

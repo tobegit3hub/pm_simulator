@@ -12,10 +12,7 @@ def request_change_css(command):
 
 
 def main():
-    #command = sys.argv[1]
-    #command = "背景换成橙色"
-    command = "背景换成蓝色"
-    command = "随机"
+    command = sys.argv[1]
     request_change_css(command)
 
 
