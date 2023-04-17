@@ -53,10 +53,17 @@ You can use the [auto refresh extension](https://chrome.google.com/webstore/deta
 
 ### Use GUI
 
+Install the `dialog` first.
+
 ```
 brew install dialog
 ```
 
+Run the GUI toolkit to select the command to execute.
+
 ```
 ./gui_toolbox.py
 ```
+
+![](./images/gui_toolbox.png)
+

@@ -11,7 +11,7 @@ WIDTH=0
 while true; do
   exec 3>&1
   selection=$(dialog \
-    --backtitle OpenMLDB \
+    --backtitle "GUI Toolbox" \
     --clear \
     --cancel-label "Exit" \
     --menu "Please select:" $HEIGHT $WIDTH 0 \
