@@ -1,26 +1,61 @@
 #!/usr/bin/env python3
 
-import requests
+import speech_recognition as sr
+from os import path
+from gtts import gTTS
 import sys
-import pyttsx3
+
+import client
 
 
+def wav_to_text(wav_file: str) -> str:
+    r = sr.Recognizer()
+    with sr.AudioFile(wav_file) as source:
+        audio = r.record(source)
+    try:
+        text = r.recognize_google(audio)
+        print("Read wav file and get text: {}".format(text))
+        return text
+    except Exception as e:
+        raise Exception("Fail to load wav file: {}, exception: {}, try again if exception is null".format(wav_file, e))
 
-def request_change_css(command):
-    url = 'http://127.0.0.1:5000/update_css'
-    data = {'command': command}
-    response = requests.post(url, data=data)
-    print(response.json())
+
+def get_voice_input() -> str:    
+    # create a speech recognition object
+    r = sr.Recognizer()
+
+    # use the default microphone as the audio source
+    with sr.Microphone() as source:
+        print("Say something!")
+        audio = r.listen(source)
+
+    # recognize speech using the Google Speech Recognition API
+    try:
+        text = r.recognize_google(audio)
+        print("You said: " + text)
+
+        # convert text to speech
+        tts = gTTS(text=text, lang='en')
+        print("Save to output.mp3")
+        tts.save("output.mp3")
+        #os.system("afplay output.mp3")
+
+        return text
+
+    except sr.UnknownValueError:
+        print("Google Speech Recognition could not understand audio")
+    except sr.RequestError as e:
+        print("Could not request results from Google Speech Recognition service; {0}".format(e))
 
 
 def main():
-    #command = sys.argv[1]
-    #command = "背景换成橙色"
-    #command = "背景换成蓝色"
-    #command = "随机"
-    #request_change_css(command)
-    engine = pyttsx3.init()
+    if len(sys.argv) > 1:
+        command = wav_to_text(sys.argv[1])
+    else:
+        command = get_voice_input()
 
+    client.request_change_css(command)
 
+    
 if __name__ == "__main__":
     main()
