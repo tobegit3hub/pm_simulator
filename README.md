@@ -75,6 +75,7 @@ If you want to use voice client and "talk" to the server, you need to install th
 brew install portaudio
 
 pip install pyaudio
+pip install whisper
 ```
 
 Then run with the voice client and allow operating system to record your command.

@@ -4,9 +4,17 @@ import speech_recognition as sr
 from os import path
 from gtts import gTTS
 import sys
+import whisper
 
 import client
 
+
+def mp3_to_text(mp3_file: str) -> str:
+    model = whisper.load_model("base")
+    result = model.transcribe(mp3_file)
+    text = result["text"]
+    print("Read mp3 file {} to text: {}".format(mp3_file, text))
+    return text
 
 def wav_to_text(wav_file: str) -> str:
     r = sr.Recognizer()
@@ -14,7 +22,7 @@ def wav_to_text(wav_file: str) -> str:
         audio = r.record(source)
     try:
         text = r.recognize_google(audio)
-        print("Read wav file and get text: {}".format(text))
+        print("Read wav file {} to text: {}".format(text))
         return text
     except Exception as e:
         raise Exception("Fail to load wav file: {}, exception: {}, try again if exception is null".format(wav_file, e))
@@ -50,7 +58,13 @@ def get_voice_input() -> str:
 
 def main():
     if len(sys.argv) > 1:
-        command = wav_to_text(sys.argv[1])
+        voice_file = sys.argv[1]
+        if voice_file.endswith(".mp3"):
+            command = mp3_to_text(voice_file)
+        elif voice_file.endswith(".wav"):
+            command = wav_to_text(voice_file)
+        else:
+            raise Exception("Unsupported file type: {}".format(voice_file))
     else:
         command = get_voice_input()
 

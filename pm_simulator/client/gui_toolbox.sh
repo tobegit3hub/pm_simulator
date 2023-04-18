@@ -21,6 +21,7 @@ while true; do
     "4" "标题大小调成20像素" \
     "5" "超链接颜色改为黄色" \
     "6" "Do not display footer" \
+    "7" "语音输入(通过电脑麦克风输入，仅支持英文)" \
     2>&1 1>&3)
   exit_status=$?
   exec 3>&-
@@ -60,6 +61,9 @@ while true; do
       ;;
     6 )
       ./client.py "Do not display footer"
+      ;;
+    7 )
+      ./voice_client.py
       ;;
   esac
 

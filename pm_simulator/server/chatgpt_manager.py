@@ -24,48 +24,16 @@ class GptManager:
         model_engine = "gpt-3.5-turbo"
         temperature = 0.0
         max_tokens = 512
-        keep_history_num = 5
+        keep_history_num = 1
         return cls(api_key, model_engine, temperature, max_tokens, keep_history_num)
 
     def generate_system_message(self) -> str:
-        """
-        You are a helpful website developer and help to update the CSS file.
-
-Here is the HTML file.
-
-<!DOCTYPE html>
-<html>
-<head>
-  <title>My Website Title</title>
-  <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-  <div class="background">
-    <h1>Welcome to My Website</h1>
-    <p>This is the homepage of my website.</p>
-  </div>
-</body>
-</html>
-
-Here is the original CSS file.
-
-.background {
-  background-color: #11e;
-  padding: 50px;
-  text-align: center;
-}
-
-Get user's input and only output the new CSS file. No instruction, introduction and other message.
-        """
-
 
         with open('./templates/index.html', 'r') as file:
           html = file.read()
 
         with open('./assets/style.css', 'r') as file:
           css = file.read()
-
 
         system_message_template = """You are a helpful website designer and developer to help to update the CSS file.
 
