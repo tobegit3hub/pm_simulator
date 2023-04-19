@@ -5,7 +5,8 @@ from flask import Flask, render_template, request, jsonify
 from chatgpt_manager import GptManager
 
 app = Flask(__name__, template_folder='templates', static_folder='assets')
-#app = Flask(__name__, template_folder='personal_blog/templates', static_folder='personal_blog/assets')
+
+gpt_manager = GptManager.create()
 
 
 @app.route('/')
@@ -17,8 +18,7 @@ def index():
 def update_css():
     command = request.form.get('command')
 
-    llm = GptManager.create()
-    new_css = llm.generate_css(command)
+    new_css = gpt_manager.generate_css(command)
 
     # Update CSS file with new_css
     with open('./assets/style.css', 'w') as f:

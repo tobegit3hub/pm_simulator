@@ -21,7 +21,9 @@ while true; do
     "4" "标题大小调成20像素" \
     "5" "超链接颜色改为黄色" \
     "6" "Do not display footer" \
-    "7" "语音输入(通过电脑麦克风输入，仅支持英文)" \
+    "7" "算了，还是原来的样式吧 / Undo and use last version" \
+    "8" "语音输入(通过电脑麦克风输入，仅支持英文)" \
+    "9" "重制CSS文件" \
     2>&1 1>&3)
   exit_status=$?
   exec 3>&-
@@ -63,7 +65,13 @@ while true; do
       ./client.py "Do not display footer"
       ;;
     7 )
+      ./client.py "算了，还是原来的样式吧"
+      ;;
+    8 )
       ./voice_client.py
+      ;;
+    9 )
+      ./reset_css_file.sh
       ;;
   esac
 
