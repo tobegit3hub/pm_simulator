@@ -16,12 +16,11 @@ class GptManager:
         self.model_engine = model_engine
         self.temperature = temperature
         self.max_tokens = max_tokens
-        self.history_css_queue = queue.Queue(2)
+        self.history_css_queue = queue.Queue(1)
 
         # Put two CSS content in the queue
         with open('./assets/style.css', 'r') as file:
             css_content = file.read()
-            self.history_css_queue.put(css_content)
             self.history_css_queue.put(css_content)
 
 
