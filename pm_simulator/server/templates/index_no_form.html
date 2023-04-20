@@ -2,19 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="-1">
+    <meta http-equiv="refresh" content="3">
     <!-- <meta http-equiv="refresh" content="-1"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Personal Blog</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
-<form action="/update_html" method="post">
-    <label for="command">Command:</label>
-    <input type="text" id="command" name="command">
-    <input type="submit" value="Submit">
-</form>
-
 <body>
     <header>
         <h1>My Personal Blog</h1>

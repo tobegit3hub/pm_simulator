@@ -16,12 +16,12 @@ class GptManager:
         self.model_engine = model_engine
         self.temperature = temperature
         self.max_tokens = max_tokens
-        self.history_css_queue = queue.Queue(1)
+        #self.history_css_queue = queue.Queue(1)
 
         # Put two CSS content in the queue
-        with open('./assets/style.css', 'r') as file:
-            css_content = file.read()
-            self.history_css_queue.put(css_content)
+        #with open('./assets/style.css', 'r') as file:
+        #    css_content = file.read()
+        #    self.history_css_queue.put(css_content)
 
 
     @classmethod
@@ -40,11 +40,13 @@ Here is the original CSS file.
 
 {}
 
-Generate the new CSS for user's input.
+Generate the new CSS for user's requests.
 
-Keep the original CSS styles. Only output the content of CSS file. No more introduction nor other messages.
+Keep the original CSS styles. Only output the content of updated CSS file. No extra message. No introduction like "Here is the updated CSS file with the requested changes".
 """
-        last_css = self.history_css_queue.get()
+        #last_css = self.history_css_queue.get()
+        with open('./assets/style.css', 'r') as file:
+            last_css = file.read()
         system_message = system_message_template.format(last_css)
         print("Genereate system message: ", system_message)
         return system_message
@@ -66,6 +68,7 @@ Keep the original CSS styles. Only output the content of CSS file. No more intro
       
     
     def generate_css(self, command: str):
+        print("Get user command: ", command)
         request_messages = [{"role": "system", "content": self.generate_system_message()}]
         request_messages.append({"role": "user", "content": command})
 
@@ -78,7 +81,7 @@ Keep the original CSS styles. Only output the content of CSS file. No more intro
         print("ChatGPT output response", response)
 
         new_css = self.extrace_css_code(response.choices[0].message["content"])
-        self.history_css_queue.put(new_css)
+        #self.history_css_queue.put(new_css)
 
         return new_css
 
