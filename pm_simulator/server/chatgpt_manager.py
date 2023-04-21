@@ -42,7 +42,7 @@ Here is the original CSS file.
 
 Generate the new CSS for user's requests.
 
-Keep the original CSS styles. Only output the content of updated CSS file. No extra message. No introduction like "Here is the updated CSS file with the requested changes".
+Make sure to keep the original CSS styles. Only output the content of updated CSS file. No extra message. No introduction like "Here is the updated CSS file" nor "you can add the following CSS code".
 """
         #last_css = self.history_css_queue.get()
         with open('./assets/style.css', 'r') as file:

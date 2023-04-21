@@ -69,3 +69,7 @@ footer p {
   margin: 0;
   font-size: 0.9rem;
 }
+
+#command_form {
+  display: inline;
+}
